@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container" id="myapp">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="product in products" :key="product.id">
+                
+                <td> {{ product.id }} </td>
+                <td>{{ product.name }}  </td>
+                <td>{{ product.buying_price }}</td>
+              </tr>
+              
+              
+            </tbody>
+          </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return{
+                    products:[]
+            };
+            },
+            methods:{
+                  
+                async fetch_products(){
+
+                    try{
+                    const products = await axios.get('http://127.0.0.1:5000/product')
+                    this.products = products.data
+                    console.log(this.products);
+                    }
+                    catch(error){
+                        console.log("error",error)
+                    }
+            }
+            },
+            created(){
+            this.fetch_products()
+        }
+            
+        }).mount('#myapp');
+    </script>
+</body>
+</html>
